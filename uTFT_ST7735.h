@@ -38,6 +38,7 @@
  * CS       GND
  */
 
+/*
  #define SPI_SOFTWARE
  #define RSREG DDRB
  #define RSTREG DDRB
@@ -49,6 +50,28 @@
  #define SPIPORT PORTB
  #define SCK PB2
  #define MOSI PB0
+ */
+
+/*
+	// ATMEGA 2560 with hardware SPI
+ * SCL      PD0 (SCK)
+ * SDA      PD1 (MOSI)
+ * RS       PA1??
+ * RST      PA0
+ * CS       PA2
+*/
+
+#define SPI_HARDWARE
+#define RSREG DDRA
+#define RSTREG DDRA
+#define RSPORT PORTA
+#define RSTPORT PORTA
+#define RS PA1
+#define RST PA0
+#define SPIREG DDRD
+#define SPIPORT PORTD
+#define SCK PD0
+#define MOSI PD1
 
 #define _width    128
 #define _height   160
@@ -74,6 +97,18 @@ void write(uint8_t);
 void setCursor(int16_t x, int16_t y);
 void setTextColor(uint16_t c, uint16_t bg);
 void setTextWrap(uint8_t w);
+
+
+/*
+ * private functions
+ */
+void SPI_begin(void);
+void SPI_end(void);
+void spiwrite(uint8_t c);
+void writecommand(uint8_t c);
+void writedata(uint8_t c);
+void spistreampixel(uint16_t color);
+
 
 // Pass 8-bit (each) R,G,B, get back 16-bit packed color
 #define Color565(r,g,b) (uint16_t)((b & 0xF8) << 8) | ((g & 0xFC) << 3) | (r >> 3)
